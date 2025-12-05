@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -18,9 +19,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'device_id',
         'name',
-        'email',
-        'password',
+        'age',
+        'longitude',
+        'latitude',
     ];
 
     /**
@@ -41,8 +44,17 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'age' => 'integer',
+            'latitude' => 'float',
+            'longitude' => 'float',
         ];
+    }
+
+    /**
+     * Get the pictures for the user.
+     */
+    public function pictures(): HasMany
+    {
+        return $this->hasMany(UserPicture::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\UserPicture;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,11 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create 1000 users
+        $users = User::factory(1000)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Create 3 pictures for each user
+        $users->each(function ($user) {
+            for ($i = 1; $i <= 3; $i++) {
+                UserPicture::factory()->create([
+                    'user_id' => $user->id,
+                    'sort_order' => $i,
+                ]);
+            }
+        });
     }
 }
