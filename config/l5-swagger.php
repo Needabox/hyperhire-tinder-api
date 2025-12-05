@@ -49,6 +49,18 @@ return [
             ],
         ],
     ],
+    'ui' => [
+        'display' => [
+            'syntaxHighlight' => true,
+        ],
+        'assets' => [
+            'css' => 'https://unpkg.com/swagger-ui-dist/swagger-ui.css',
+            'js' => [
+                'https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js',
+                'https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js',
+            ]
+        ],
+    ],
     'defaults' => [
         'routes' => [
             /*
