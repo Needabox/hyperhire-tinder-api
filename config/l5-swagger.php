@@ -46,6 +46,8 @@ return [
                 'annotations' => [
                     base_path('app'),
                 ],
+
+                'docs_json_url' => env('L5_SWAGGER_DOCS_JSON_URL', null),
             ],
         ],
     ],
@@ -111,6 +113,8 @@ return [
              * `scanOptions.exclude` overwrites this
              */
             'excludes' => [],
+
+            'docs_json_url' => env('L5_SWAGGER_DOCS_JSON_URL', null),
         ],
 
         'scanOptions' => [
