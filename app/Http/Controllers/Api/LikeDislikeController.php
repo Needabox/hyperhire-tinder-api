@@ -207,7 +207,7 @@ class LikeDislikeController extends Controller
      *         @OA\Schema(type="integer", default=1, example=1)
      *     ),
      *     @OA\Parameter(
-     *         name="per_page",
+     *         name="limit",
      *         in="query",
      *         required=false,
      *         description="Number of items per page",
@@ -217,22 +217,29 @@ class LikeDislikeController extends Controller
      *         response=200,
      *         description="Successful response",
      *         @OA\JsonContent(
-     *             @OA\Property(property="current_page", type="integer", example=1),
      *             @OA\Property(
-     *                 property="data",
+     *                 property="items",
      *                 type="array",
      *                 @OA\Items(
-     *                     @OA\Property(property="person_id", type="integer", example=10),
-     *                     @OA\Property(property="name", type="string", example="Alicia"),
-     *                     @OA\Property(property="age", type="integer", example=23),
+     *                     @OA\Property(property="person_id", type="integer", example=998),
+     *                     @OA\Property(property="name", type="string", example="Annalise Schultz"),
+     *                     @OA\Property(property="age", type="integer", example=22),
      *                     @OA\Property(
      *                         property="pictures",
      *                         type="array",
      *                         @OA\Items(type="string"),
-     *                         example={"url1", "url2"}
+     *                         example={"https://via.placeholder.com/640x480.png/00dd88?text=people+qui", "https://picsum.photos/640/480?random=656"}
      *                     ),
-     *                     @OA\Property(property="liked_at", type="string", example="2025-01-01 12:00:00")
+     *                     @OA\Property(property="liked_at", type="string", example="2025-12-05 08:39:39")
      *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(property="page", type="integer", example=1),
+     *                 @OA\Property(property="limit", type="integer", example=2),
+     *                 @OA\Property(property="total", type="integer", example=8),
+     *                 @OA\Property(property="total_page", type="integer", example=4)
      *             )
      *         )
      *     ),
@@ -253,21 +260,26 @@ class LikeDislikeController extends Controller
     {
         try {
             $page = (int) $request->input('page', 1);
-            $perPage = (int) $request->input('per_page', 20);
+            $limit = (int) $request->input('limit', 20);
 
             // Validate pagination parameters
             if ($page < 1) {
                 $page = 1;
             }
-            if ($perPage < 1 || $perPage > 100) {
-                $perPage = 20;
+            if ($limit < 1 || $limit > 100) {
+                $limit = 20;
             }
 
-            $likes = $this->likeDislikeService->getLikedList($user_id, $page, $perPage);
+            $likes = $this->likeDislikeService->getLikedList($user_id, $page, $limit);
 
             return response()->json([
-                'current_page' => $likes->currentPage(),
-                'data' => LikedPersonResource::collection($likes->items()),
+                'items' => LikedPersonResource::collection($likes->items()),
+                'meta' => [
+                    'page' => $likes->currentPage(),
+                    'limit' => $likes->perPage(),
+                    'total' => $likes->total(),
+                    'total_page' => $likes->lastPage(),
+                ],
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([

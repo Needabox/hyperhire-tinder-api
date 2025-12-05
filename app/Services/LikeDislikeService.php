@@ -100,12 +100,12 @@ class LikeDislikeService
      *
      * @param  int  $userId
      * @param  int  $page
-     * @param  int  $perPage
+     * @param  int  $limit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      *
      * @throws ModelNotFoundException
      */
-    public function getLikedList(int $userId, int $page = 1, int $perPage = 20)
+    public function getLikedList(int $userId, int $page = 1, int $limit = 20)
     {
         // Validate that user exists
         User::findOrFail($userId);
@@ -115,7 +115,7 @@ class LikeDislikeService
                 $query->orderBy('sort_order', 'asc');
             }])
             ->orderBy('created_at', 'desc')
-            ->paginate($perPage, ['*'], 'page', $page);
+            ->paginate($limit, ['*'], 'page', $page);
     }
 }
 

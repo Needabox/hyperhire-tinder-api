@@ -14,10 +14,10 @@ class RecommendedPeopleService
      * @param  float  $latitude
      * @param  float  $longitude
      * @param  int  $page
-     * @param  int  $perPage
+     * @param  int  $limit
      * @return LengthAwarePaginator
      */
-    public function getRecommendedPeople(float $latitude, float $longitude, int $page = 1, int $perPage = 20): LengthAwarePaginator
+    public function getRecommendedPeople(float $latitude, float $longitude, int $page = 1, int $limit = 20): LengthAwarePaginator
     {
         // Calculate distance using Haversine formula
         // Formula: 6371 is Earth's radius in kilometers
@@ -44,7 +44,7 @@ class RecommendedPeopleService
                 $query->orderBy('sort_order', 'asc');
             }])
             ->orderBy('distance_km', 'asc')
-            ->paginate($perPage, ['*'], 'page', $page);
+            ->paginate($limit, ['*'], 'page', $page);
 
         // Add distance_km to each user model
         $users->getCollection()->transform(function ($user) {

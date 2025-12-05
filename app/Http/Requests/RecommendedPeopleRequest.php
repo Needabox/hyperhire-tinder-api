@@ -23,7 +23,7 @@ class RecommendedPeopleRequest extends FormRequest
     {
         return [
             'page' => ['sometimes', 'integer', 'min:1'],
-            'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
+            'limit' => ['sometimes', 'integer', 'min:1', 'max:100'],
             'lat' => ['required', 'numeric', 'between:-90,90'],
             'lng' => ['required', 'numeric', 'between:-180,180'],
         ];
@@ -45,9 +45,9 @@ class RecommendedPeopleRequest extends FormRequest
             'lng.between' => 'Longitude must be between -180 and 180.',
             'page.integer' => 'Page must be an integer.',
             'page.min' => 'Page must be at least 1.',
-            'per_page.integer' => 'Per page must be an integer.',
-            'per_page.min' => 'Per page must be at least 1.',
-            'per_page.max' => 'Per page cannot exceed 100.',
+            'limit.integer' => 'Limit must be an integer.',
+            'limit.min' => 'Limit must be at least 1.',
+            'limit.max' => 'Limit cannot exceed 100.',
         ];
     }
 
@@ -62,7 +62,7 @@ class RecommendedPeopleRequest extends FormRequest
 
         return [
             'page' => $validated['page'] ?? 1,
-            'per_page' => $validated['per_page'] ?? 20,
+            'limit' => $validated['limit'] ?? 20,
             'lat' => (float) $validated['lat'],
             'lng' => (float) $validated['lng'],
         ];

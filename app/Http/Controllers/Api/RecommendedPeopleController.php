@@ -48,7 +48,7 @@ class RecommendedPeopleController extends Controller
      *         @OA\Schema(type="integer", default=1, example=1)
      *     ),
      *     @OA\Parameter(
-     *         name="per_page",
+     *         name="limit",
      *         in="query",
      *         required=false,
      *         description="Number of items per page",
@@ -58,22 +58,29 @@ class RecommendedPeopleController extends Controller
      *         response=200,
      *         description="Successful response",
      *         @OA\JsonContent(
-     *             @OA\Property(property="current_page", type="integer", example=1),
      *             @OA\Property(
-     *                 property="data",
+     *                 property="items",
      *                 type="array",
      *                 @OA\Items(
-     *                     @OA\Property(property="id", type="integer", example=10),
-     *                     @OA\Property(property="name", type="string", example="Alicia"),
-     *                     @OA\Property(property="age", type="integer", example=23),
+     *                     @OA\Property(property="id", type="integer", example=998),
+     *                     @OA\Property(property="name", type="string", example="Annalise Schultz"),
+     *                     @OA\Property(property="age", type="integer", example=22),
      *                     @OA\Property(
      *                         property="pictures",
      *                         type="array",
      *                         @OA\Items(type="string"),
-     *                         example={"https://cdn.app.com/1.jpg", "https://cdn.app.com/2.jpg"}
+     *                         example={"https://via.placeholder.com/640x480.png/00dd88?text=people+qui", "https://picsum.photos/640/480?random=656"}
      *                     ),
      *                     @OA\Property(property="distance_km", type="number", format="float", example=1.2)
      *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(property="page", type="integer", example=1),
+     *                 @OA\Property(property="limit", type="integer", example=2),
+     *                 @OA\Property(property="total", type="integer", example=8),
+     *                 @OA\Property(property="total_page", type="integer", example=4)
      *             )
      *         )
      *     ),
@@ -105,12 +112,17 @@ class RecommendedPeopleController extends Controller
             latitude: $validated['lat'],
             longitude: $validated['lng'],
             page: $validated['page'],
-            perPage: $validated['per_page']
+            limit: $validated['limit']
         );
 
         return response()->json([
-            'current_page' => $users->currentPage(),
-            'data' => RecommendedPeopleResource::collection($users->items()),
+            'items' => RecommendedPeopleResource::collection($users->items()),
+            'meta' => [
+                'page' => $users->currentPage(),
+                'limit' => $users->perPage(),
+                'total' => $users->total(),
+                'total_page' => $users->lastPage(),
+            ],
         ]);
     }
 }
