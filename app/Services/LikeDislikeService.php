@@ -93,5 +93,29 @@ class LikeDislikeService
             ]);
         });
     }
+
+    /**
+     * Get liked people list for a user.
+     * Returns list of people who have liked the specified user.
+     *
+     * @param  int  $userId
+     * @param  int  $page
+     * @param  int  $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     *
+     * @throws ModelNotFoundException
+     */
+    public function getLikedList(int $userId, int $page = 1, int $perPage = 20)
+    {
+        // Validate that user exists
+        User::findOrFail($userId);
+
+        return Like::where('target_user_id', $userId)
+            ->with(['user.pictures' => function ($query) {
+                $query->orderBy('sort_order', 'asc');
+            }])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+    }
 }
 
