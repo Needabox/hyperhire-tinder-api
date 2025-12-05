@@ -80,7 +80,12 @@ class CheckPopularPeople extends Command
             // Send email immediately without queue
             Mail::to($adminEmail)->sendNow(new PopularPersonMail($popularPeople));
 
+            // Update notify_at for all popular people
+            User::whereIn('id', $popularUserIds)
+                ->update(['notify_at' => now()]);
+
             $this->info("Email notification sent successfully to: {$adminEmail}");
+            $this->info("Updated notify_at for {$popularPeople->count()} popular person(s).");
 
             // Display summary
             $this->table(
