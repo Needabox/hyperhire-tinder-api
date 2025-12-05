@@ -57,4 +57,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserPicture::class);
     }
+
+    /**
+     * Get the likes made by this user.
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class, 'user_id');
+    }
+
+    /**
+     * Get the dislikes made by this user.
+     */
+    public function dislikes(): HasMany
+    {
+        return $this->hasMany(Dislike::class, 'user_id');
+    }
 }

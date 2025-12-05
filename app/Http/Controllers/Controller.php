@@ -10,8 +10,8 @@ namespace App\Http\Controllers;
  * )
  *
  * @OA\Server(
- *     url="/api",
- *     description="API Server"
+ *     url="/api/v1",
+ *     description="API Server V1"
  * )
  */
 abstract class Controller
