@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('age')->nullable();
             $table->string('longitude')->nullable();
             $table->string('latitude')->nullable();
+            $table->timestamp('notify_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

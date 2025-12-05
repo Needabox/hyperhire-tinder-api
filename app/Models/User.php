@@ -73,4 +73,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Dislike::class, 'user_id');
     }
+
+    /**
+     * Get the likes received by this user (people who liked this user).
+     */
+    public function receivedLikes(): HasMany
+    {
+        return $this->hasMany(Like::class, 'target_user_id');
+    }
 }
