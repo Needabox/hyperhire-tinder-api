@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Force HTTPS di production untuk mengatasi mixed content error
+        if (app()->environment('production') || request()->isSecure()) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }

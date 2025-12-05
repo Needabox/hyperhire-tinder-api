@@ -26,9 +26,17 @@ Route::get('/api/documentation', function () {
 
     $useAbsolutePath = $docConfig['paths']['use_absolute_path'] ?? config('l5-swagger.defaults.paths.use_absolute_path', true);
 
+    $docsUrl = route('l5-swagger.' . $documentation . '.docs', [], $useAbsolutePath);
+
+    // Pastikan URL menggunakan HTTPS jika halaman dimuat via HTTPS (fallback)
+    if (request()->isSecure() && str_starts_with($docsUrl, 'http://')) {
+        $docsUrl = str_replace('http://', 'https://', $docsUrl);
+    }
+
     $urlsToDocs = [
-        $documentationTitle => route('l5-swagger.' . $documentation . '.docs', [], $useAbsolutePath)
+        $documentationTitle => $docsUrl
     ];
+
     $operationsSorter = config('l5-swagger.defaults.operations_sort');
     $configUrl = config('l5-swagger.defaults.additional_config_url');
     $validatorUrl = config('l5-swagger.defaults.validator_url');
