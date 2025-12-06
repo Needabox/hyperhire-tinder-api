@@ -40,7 +40,7 @@ class LikeDislikeController extends Controller
      *         in="header",
      *         required=true,
      *         description="Device ID for authentication",
-     *         @OA\Schema(type="string", example="a0f07553-e5e0-32d0-b600-1eb557befbdf")
+     *         @OA\Schema(type="string", example="device-12345")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -122,7 +122,7 @@ class LikeDislikeController extends Controller
      *         in="header",
      *         required=true,
      *         description="Device ID for authentication",
-     *         @OA\Schema(type="string", example="a0f07553-e5e0-32d0-b600-1eb557befbdf")
+     *         @OA\Schema(type="string", example="device-12345")
      *     ),
      *     @OA\Response(
      *         response=200,
